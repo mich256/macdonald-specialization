@@ -1,4 +1,5 @@
-Sym = SymmetricFunctions(FractionField(QQ['q','t']))
+R.<q,t> = QQ['q,t']
+Sym = SymmetricFunctions(FractionField(R))
 P = Sym.macdonald().P()
 Q = Sym.macdonald().Q()
 
@@ -17,10 +18,9 @@ def nlm(l,m):
 
 def bl(l):
 	l = Partition(l)
-	return 1/P.scalar_qt_basis(l,l)
+	return prod((1-q^(l.arm_length(i,j)) * t^(l.leg_length(i,j)+1)) / (1- q^(l.arm_length(i,j)+1) * t^(l.leg_length(i,j))) for i,j in l.cells())
 
 def Pprincipal(l):
-	q,t = var('q,t')
 	l = Partition(l)
 	return t^(nl(l)) * prod(1/(1-q^(l.arm_length(i,j)) * t^(l.leg_length(i,j)+1)) for i,j in l.cells())
 
