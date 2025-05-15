@@ -21,12 +21,22 @@ def bl(l):
 
 def Pprincipal(l):
 	q,t = var('q,t')
+	l = Partition(l)
 	return t^(nl(l)) * prod(1/(1-q^(l.arm_length(i,j)) * t^(l.leg_length(i,j)+1)) for i,j in l.cells())
 
 def Qlm(l,m):
 	l = Partition(l)
 	m = Partition(m)
 	return sum(struc_cons(l,m,nu) * bl(nu) * Pprincipal(nu) for nu in Partitions(sum(l)-sum(m), outer=l))
+
+def Qratio(l,m):
+	return Qlm(l,m)/(bl(l)*Pprincipal(l))
+
+def Plm(l,m):
+	return bl(m) * Qlm(l,m) / bl(l)
+
+def Pratio(l,m):
+	return bl(m) * Qratio(l,m)
 
 def QHLprincipal(l,m):
 	q,t = var('q,t')
